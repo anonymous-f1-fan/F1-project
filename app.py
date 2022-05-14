@@ -28,7 +28,6 @@ with st.echo(code_location='below'):
     seasons = get_data("seasons.csv")
     sprint_results = get_data("sprint_results.csv")
 
-
     drivers['fullname'] = drivers['forename'] + ' ' + drivers['surname']
 
     """Этот проект, как следует из названия, посвящён анализу и визуализации различных данных, связанных с Формулой-1.
@@ -88,7 +87,7 @@ with st.echo(code_location='below'):
         Гран-При Формулы-1. Ниже Вы увидите визуализацию: круговую диаграмму, показывающую какую часть от всех гонок, 
         проведённых в этой стране, принял каждый из автодромов"""
 
-        country = st.selectbox("Choose the country", circuits["country"].unique())
+        country = st.selectbox("Выберите страну:", circuits["country"].unique())
 
         circuits_in_country = circuits[lambda x: x['country'] == country].reset_index()[['name','location','country']]
         circuits_in_country
@@ -152,7 +151,7 @@ with st.echo(code_location='below'):
         """Как вы могли увидеть, количество победителей и количество побед для разных стран сильно отличается. 
         Мне кажется, было бы интересно сравнить разные страны (национальности) друг с другом. Чтобы сделать это, 
         выберите в следующем окошке несколько стран."""
-        nationalities =  st.multiselect("Выберите страны (национальности):", drivers["nationality"].unique())
+        nationalities = st.multiselect("Выберите страны (национальности):", drivers["nationality"].unique())
         number_of_victories_by_nations = (victories_by_drivers[lambda x: x['nationality'].isin(nationalities)]
                                           .groupby("nationality")['raceId'].count())
         total_victories_by_nations = (pd.DataFrame({'Nationality': number_of_victories_by_nations.reset_index()['nationality'],
@@ -364,9 +363,9 @@ with st.echo(code_location='below'):
         """Вы можете выбрать поочереди разных пилотов и выбирать разные этапы, чтобы посмотреть, кто обычно хорошо выступает 
         в квалификациях, а кто хуже. Также можно сравнить, как менялись времена гонщика в разных сегментах одной квалификации."""
 
-        a = st.slider('Choose the year:', 2006, 2021)
+        a = st.slider('Выберите сезон:', 2006, 2021)
         races_in_this_year = races[lambda x: x['year'] == a]
-        grand_prix = st.selectbox('Choose the Gran Prix:', races_in_this_year['name'].unique())
+        grand_prix = st.selectbox('Выберите Гран-При', races_in_this_year['name'].unique())
 
         @st.cache(allow_output_mutation=True)
         def df_for_q(a, grand_prix):
@@ -387,7 +386,7 @@ with st.echo(code_location='below'):
 
         df = df_for_q(a, grand_prix)
 
-        chosen_driver = st.selectbox('Choose the driver:', df['fullname'].unique())
+        chosen_driver = st.selectbox('Выберите гонщика:', df['fullname'].unique())
 
         df2 = df[lambda x: x['fullname'] == chosen_driver]
         df3 = pd.DataFrame(
@@ -628,15 +627,3 @@ with st.echo(code_location='below'):
         st.pyplot(fig)
 
         """Спасибо за внимание! Надеюсь, мой проект оказался интересным!"""
-
-
-
-
-
-
-
-
-
-
-
-
